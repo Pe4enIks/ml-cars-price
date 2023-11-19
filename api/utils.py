@@ -69,80 +69,23 @@ def prepare_other(val):
     if str(val) == 'nan':
         return val
     try:
-        v1, _ = val.split()
+        num, _ = val.split()
     except:
         try:
             return float(val)
         except:
             return np.nan
-    return float(v1)
+    return float(num)
 
 
-def prepare_seats(val):
-    map_seats_to_ind = {
-        4: 0,
-        5: 1,
-        6: 2,
-        7: 3,
-        8: 4,
-        9: 5,
-        10: 6,
-        14: 7
-    }
-    one_hot = [0] * 8
-    int_val = int(val)
-    if int_val not in map_seats_to_ind.keys():
-        return np.array(one_hot)
-    one_hot[map_seats_to_ind[int_val]] = 1
-    return np.array(one_hot)
-
-
-def prepare_fuel(val):
-    one_hot = [0] * 3
-
-    if val == 'Diesel':
-        one_hot[0] = 1
-    elif val == 'LPG':
-        one_hot[1] = 1
-    elif val == 'Petrol':
-        one_hot[2] = 1
-
-    return np.array(one_hot)
-
-
-def prepare_seller(val):
-    one_hot = [0] * 2
-
-    if val == 'Individual':
-        one_hot[0] = 1
-    elif val == 'Trustmark Dealer':
-        one_hot[1] = 1
-
-    return np.array(one_hot)
-
-
-def prepare_transmission(val):
-    one_hot = [0]
-
-    if val == 'Manual':
-        one_hot[0] = 1
-
-    return np.array(one_hot)
-
-
-def prepare_owner(val):
-    one_hot = [0] * 4
-
-    if val == 'Fourth & Above Owner':
-        one_hot[0] = 1
-    elif val == 'Second Owner':
-        one_hot[1] = 1
-    elif val == 'Test Drive Car':
-        one_hot[2] = 1
-    elif val == 'Third Owner':
-        one_hot[3] = 1
-
-    return np.array(one_hot)
+def fill_missing(values, median):
+    filled_values = []
+    for name, value in values:
+        if np.isnan(value):
+            filled_values += [float(median[name])]
+        else:
+            filled_values += [float(value)]
+    return filled_values
 
 
 if __name__ == '__main__':

@@ -4,17 +4,17 @@ import pickle
 import uvicorn
 
 from models import Item, Items
-from utils import prepare_other, prepare_torque, prepare_seats, prepare_fuel, \
-    prepare_seller, prepare_transmission, prepare_owner
+from utils import prepare_other, prepare_torque, fill_missing
 
 app = FastAPI()
 
 with open('../ckpt/ckpt.pkl', 'rb') as f:
     dump_dct = pickle.load(f)
 
-model = dump_dct['model']
-scaler = dump_dct['scaler']
-median = dump_dct['median']
+model = dump_dct['regression_model']
+scaler = dump_dct['standart_scaler']
+encoder = dump_dct['one_hot_encoder']
+median = dump_dct['data_median']
 
 
 @app.post("/predict_item")
@@ -31,55 +31,39 @@ def predict_item(item: Item) -> float:
     year = item.year
     km_driven = item.km_driven
 
-    if np.isnan(km_driven):
-        km_driven = median['km_driven']
-
-    if np.isnan(mileage):
-        mileage = median['mileage']
-
-    if np.isnan(engine):
-        engine = median['engine']
-
-    if np.isnan(max_power):
-        max_power = median['max_power']
-
-    if np.isnan(torque):
-        torque = median['torque']
-
-    if np.isnan(max_torque_rpm):
-        max_torque_rpm = median['max_torque_rpm']
+    to_fill = [
+        ('year', year),
+        ('km_driven', km_driven),
+        ('mileage', mileage),
+        ('engine', engine),
+        ('max_power', max_power),
+        ('torque', torque),
+        ('max_torque_rpm', max_torque_rpm),
+        ('power_per_liter', power_per_liter),
+        ('mileage_per_liter', mileage_per_liter)
+    ]
+    filled_missing = fill_missing(to_fill, median)
 
     if np.isnan(item.seats):
-        seats = median['seats']
+        seats = str(int(median['seats']))
     else:
-        seats = item.seats
+        seats = str(int(item.seats))
 
-    one_hot_fuel = prepare_fuel(item.fuel)
-    one_hot_seller = prepare_seller(item.seller_type)
-    one_hot_transmission = prepare_transmission(item.transmission)
-    one_hot_owner = prepare_owner(item.owner)
-    one_hot_seats = prepare_seats(seats)
-
-    sample_to_scale = np.array([
-        float(year),
-        float(km_driven),
-        float(mileage),
-        float(engine),
-        float(max_power),
-        float(torque),
-        float(max_torque_rpm),
-        float(power_per_liter),
-        float(mileage_per_liter),
+    categorical_data = np.array([
+        item.fuel,
+        item.seller_type,
+        item.transmission,
+        item.owner,
+        seats
     ]).reshape(1, -1)
+    one_hot_data = encoder.transform(categorical_data)
+
+    sample_to_scale = np.array(filled_missing).reshape(1, -1)
 
     sample = scaler.transform(sample_to_scale)
     sample = np.hstack((
         sample,
-        one_hot_fuel.reshape(1, -1),
-        one_hot_seller.reshape(1, -1),
-        one_hot_transmission.reshape(1, -1),
-        one_hot_owner.reshape(1, -1),
-        one_hot_seats.reshape(1, -1)
+        one_hot_data
     ))
 
     pred = model.predict(sample)
