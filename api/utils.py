@@ -1,11 +1,38 @@
 import numpy as np
+import pandas as pd
 
 
-def kgm_to_nm(val):
+def kgm_to_nm(val: float) -> float:
+    '''
+        Конвертация из кгc-м в Н-м.
+
+        Parameters
+        ----------
+        val : float
+            Значение в кгс-м.
+
+        Returns
+        -------
+        float
+            Значение в Н-м.
+    '''
     return val * 9.80665
 
 
-def convert_to_float(text):
+def convert_to_float(text: str) -> float:
+    '''
+        Конвертация из str в float.
+
+        Parameters
+        ----------
+        text : str
+            Строка для конвертации.
+
+        Returns
+        -------
+        float
+            Значение в float.
+    '''
     try:
         tmp_rmp_val = text.split(',')
         if len(tmp_rmp_val) > 1:
@@ -17,7 +44,20 @@ def convert_to_float(text):
     return rpm_val
 
 
-def convert_rpm(text):
+def convert_rpm(text: str) -> float:
+    '''
+        Конвертация RPM из строки с лишними символами в float.
+
+        Parameters
+        ----------
+        text : str
+            Строка для конвертации.
+
+        Returns
+        -------
+        float
+            Значение в float.
+    '''
     tmp_text = text[:-3] if 'rpm' in text.lower() else text
     if '~' in text:
         rpms = tmp_text.split('~')
@@ -30,9 +70,23 @@ def convert_rpm(text):
     return rpm_val
 
 
-def prepare_torque(val):
+def prepare_torque(val: str) -> tuple[float, float]:
+    '''
+        Конвертация torque из строки с лишними символами в два значения float.
+        На выходе - torque и max_torque_rpm.
+
+        Parameters
+        ----------
+        val : str
+            Строка для конвертации.
+
+        Returns
+        -------
+        tuple[float, float]
+            Значения torque и max_torque_rpm.
+    '''
     if str(val) == 'nan':
-        return val
+        return np.nan, np.nan
     try:
         if '@' in val:
             lst = val.split('@')
@@ -40,6 +94,8 @@ def prepare_torque(val):
             lst = val.split('at')
         elif '/' in val:
             lst = val.split('/')
+        else:
+            lst = []
         nm_val, rpm_val = np.nan, np.nan
         if len(lst) == 2:
             rpm_val = convert_rpm(lst[1])
@@ -65,9 +121,22 @@ def prepare_torque(val):
         return np.nan, np.nan
 
 
-def prepare_other(val):
+def prepare_other(val: str) -> float:
+    '''
+        Конвертация любой строки формата "число что-то" или "число".
+
+        Parameters
+        ----------
+        val : str
+            Строка для конвертации.
+
+        Returns
+        -------
+        float
+            Значение в float.
+    '''
     if str(val) == 'nan':
-        return val
+        return np.nan
     try:
         num, _ = val.split()
     except:
@@ -78,7 +147,23 @@ def prepare_other(val):
     return float(num)
 
 
-def fill_missing(values, median):
+def fill_missing(
+    values: list[tuple[str, float]],
+    median: pd.Series
+) -> list[float]:
+    '''
+        Заполнение пропущенных значений медианой из train датасета.
+
+        Parameters
+        ----------
+        values : list[tuple[str, float]]
+            Список объектов-пар: название признака - значение.
+
+        Returns
+        -------
+        list[float]
+            Список значений без пропусков.
+    '''
     filled_values = []
     for name, value in values:
         if np.isnan(value):
