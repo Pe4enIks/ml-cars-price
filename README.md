@@ -1,6 +1,8 @@
 # Домашнее задание 1
 
-![FastAPI ML Service](/demo/fastapi-ml.mp4)
+<video src="demo/fastapi-ml.mp4" placeholder="demo/fastapi-ml.mp4" autoplay loop controls muted title="ML">
+    Sorry, your browser doesn't support HTML 5 video.
+</video>
 
 ## Что было сделано
 
