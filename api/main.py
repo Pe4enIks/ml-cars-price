@@ -24,7 +24,7 @@ file_handler = logging.FileHandler('../logs/api.log')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
-logger.setLevel('INFO')
+logger.setLevel('DEBUG')
 
 status_codes = {
     'format': 480,
@@ -49,8 +49,13 @@ def predict_item(item: Item) -> float:
         float
             Цена объекта.
     '''
+    logger.debug(f'predicting on item = {item}')
     try:
         torque, max_torque_rpm = prepare_torque(item.torque)
+        logger.debug(
+            f'initial torque = {item.torque} -> torque = {torque}, '
+            f'max_torque_rpm = {max_torque_rpm}'
+        )
     except ValueError:
         raise HTTPException(
             status_code=status_codes['format'],
@@ -59,6 +64,9 @@ def predict_item(item: Item) -> float:
 
     try:
         mileage = prepare_other(item.mileage)
+        logger.debug(
+            f'initial mileage = {item.mileage} -> mileage = {mileage}'
+        )
     except ValueError:
         raise HTTPException(
             status_code=status_codes['format'],
@@ -67,6 +75,9 @@ def predict_item(item: Item) -> float:
 
     try:
         engine = prepare_other(item.engine)
+        logger.debug(
+            f'initial engine = {item.engine} -> engine = {engine}'
+        )
     except ValueError:
         raise HTTPException(
             status_code=status_codes['format'],
@@ -75,6 +86,9 @@ def predict_item(item: Item) -> float:
 
     try:
         max_power = prepare_other(item.max_power)
+        logger.debug(
+            f'initial max_power = {item.max_power} -> max_power = {max_power}'
+        )
     except ValueError:
         raise HTTPException(
             status_code=status_codes['format'],
@@ -114,6 +128,11 @@ def predict_item(item: Item) -> float:
     try:
         power_per_liter = max_power / engine * 1000
         mileage_per_liter = mileage / engine * 1000
+        logger.debug(
+            f'max_power = {max_power}, engine = {engine} -> '
+            f'power_per_liter = {power_per_liter}, '
+            f'mileage_per_liter = {mileage_per_liter}'
+        )
     except ZeroDivisionError:
         raise HTTPException(
             status_code=status_codes['zero_division'],
@@ -141,13 +160,19 @@ def predict_item(item: Item) -> float:
         ('mileage_per_liter', mileage_per_liter)
     ]
     filled_missing = fill_missing(to_fill, median)
+    logger.debug('missing filled')
 
     if np.isnan(item.seats):
         seats = str(int(median['seats']))
     else:
         seats = str(int(item.seats))
+    logger.debug(
+        f'initial seats = {item.seats} -> seats = {seats}'
+    )
 
+    name = item.name.split()[0]
     categorical_data = np.array([
+        name,
         item.fuel,
         item.seller_type,
         item.transmission,
@@ -156,6 +181,7 @@ def predict_item(item: Item) -> float:
     ]).reshape(1, -1)
     try:
         one_hot_data = encoder.transform(categorical_data)
+        logger.debug('encoder into one-hot')
     except ValueError:
         raise HTTPException(
             status_code=status_codes['one_hot_encoder'],
@@ -165,10 +191,13 @@ def predict_item(item: Item) -> float:
     sample_to_scale = np.array(filled_missing).reshape(1, -1)
 
     sample = scaler.transform(sample_to_scale)
+    logger.debug('features scaled')
+
     sample = np.hstack((
         sample,
         one_hot_data
     ))
+    logger.debug(f'model input = {sample}')
 
     pred = model.predict(sample)
     return pred

@@ -1,0 +1,68 @@
+2023-11-22 00:06:15,377 [INFO ] Started server process [36169]
+2023-11-22 00:06:15,378 [INFO ] Waiting for application startup.
+2023-11-22 00:06:15,378 [INFO ] Application startup complete.
+2023-11-22 00:06:15,379 [INFO ] Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2023-11-22 00:06:32,195 [DEBUG] predicting on item = name='Mahindra Xylo E4 BS IV' year=2010 selling_price=229999 km_driven=168000 fuel='Diesel' seller_type='Individual' transmission='Manual' owner='First Owner' mileage='14.0 kmpl' engine='2498 CC' max_power='112 bhp' torque='260 Nm at 1800-2200 rpm' seats=7.0
+2023-11-22 00:06:32,195 [DEBUG] initial torque = 260 Nm at 1800-2200 rpm -> torque = 260.0, max_torque_rpm = 2200.0
+2023-11-22 00:06:32,196 [DEBUG] initial mileage = 14.0 kmpl -> mileage = 14.0
+2023-11-22 00:06:32,196 [DEBUG] initial engine = 2498 CC -> engine = 2498.0
+2023-11-22 00:06:32,196 [DEBUG] initial max_power = 112 bhp -> max_power = 112.0
+2023-11-22 00:06:32,196 [DEBUG] max_power = 112.0, engine = 2498.0 -> power_per_liter = 44.83586869495596, mileage_per_liter = 5.604483586869495
+2023-11-22 00:06:32,196 [DEBUG] missing filled
+2023-11-22 00:06:32,196 [DEBUG] initial seats = 7.0 -> seats = 7
+2023-11-22 00:06:32,199 [DEBUG] encoder into one-hot
+2023-11-22 00:06:32,201 [DEBUG] features scaled
+2023-11-22 00:06:32,204 [DEBUG] model input = [[-0.83721339  1.99392072 -1.36618263  2.20484024  0.77026138  0.8120365
+  -0.94915332 -1.44752852 -1.59225781  0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          1.          0.          0.
+   0.          0.          0.          0.        ]]
+2023-11-22 00:06:54,588 [DEBUG] predicting on item = name='Mahindra Xylo E4 BS IV' year=2010 selling_price=229999 km_driven=168000 fuel='Diesel' seller_type='Individual' transmission='Manual' owner='First Owner' mileage='14.0 kmpl' engine='2498 CC' max_power='112 bhp' torque='260 Nm at 1800-2200 rpm' seats=7.0
+2023-11-22 00:06:54,589 [DEBUG] initial torque = 260 Nm at 1800-2200 rpm -> torque = 260.0, max_torque_rpm = 2200.0
+2023-11-22 00:06:54,589 [DEBUG] initial mileage = 14.0 kmpl -> mileage = 14.0
+2023-11-22 00:06:54,590 [DEBUG] initial engine = 2498 CC -> engine = 2498.0
+2023-11-22 00:06:54,590 [DEBUG] initial max_power = 112 bhp -> max_power = 112.0
+2023-11-22 00:06:54,591 [DEBUG] max_power = 112.0, engine = 2498.0 -> power_per_liter = 44.83586869495596, mileage_per_liter = 5.604483586869495
+2023-11-22 00:06:54,592 [DEBUG] missing filled
+2023-11-22 00:06:54,593 [DEBUG] initial seats = 7.0 -> seats = 7
+2023-11-22 00:06:54,595 [DEBUG] encoder into one-hot
+2023-11-22 00:06:54,595 [DEBUG] features scaled
+2023-11-22 00:06:54,597 [DEBUG] model input = [[-0.83721339  1.99392072 -1.36618263  2.20484024  0.77026138  0.8120365
+  -0.94915332 -1.44752852 -1.59225781  0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          1.          0.          0.
+   0.          0.          0.          0.        ]]
+2023-11-22 00:06:54,598 [DEBUG] predicting on item = name='Hyundai Verna CRDi 1.6 AT SX Option' year=2018 selling_price=1150000 km_driven=49000 fuel='Diesel' seller_type='Individual' transmission='Automatic' owner='First Owner' mileage='22.0 kmpl' engine='1582 CC' max_power='126.2 bhp' torque='259.87nm@ 1500-3000rpm' seats=5.0
+2023-11-22 00:06:54,600 [DEBUG] initial torque = 259.87nm@ 1500-3000rpm -> torque = 259.87, max_torque_rpm = 3000.0
+2023-11-22 00:06:54,602 [DEBUG] initial mileage = 22.0 kmpl -> mileage = 22.0
+2023-11-22 00:06:54,603 [DEBUG] initial engine = 1582 CC -> engine = 1582.0
+2023-11-22 00:06:54,603 [DEBUG] initial max_power = 126.2 bhp -> max_power = 126.2
+2023-11-22 00:06:54,603 [DEBUG] max_power = 126.2, engine = 1582.0 -> power_per_liter = 79.7724399494311, mileage_per_liter = 13.90644753476612
+2023-11-22 00:06:54,604 [DEBUG] missing filled
+2023-11-22 00:06:54,604 [DEBUG] initial seats = 5.0 -> seats = 5
+2023-11-22 00:06:54,606 [DEBUG] encoder into one-hot
+2023-11-22 00:06:54,608 [DEBUG] features scaled
+2023-11-22 00:06:54,610 [DEBUG] model input = [[ 1.11530434 -0.50808426  0.64115087  0.31615276  1.22162839  0.81079833
+  -0.03437466  1.3985145  -0.24253205  0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   1.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          1.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.        ]]
+2023-11-22 00:10:48,455 [INFO ] Shutting down
+2023-11-22 00:10:48,555 [INFO ] Waiting for application shutdown.
+2023-11-22 00:10:48,555 [INFO ] Application shutdown complete.
+2023-11-22 00:10:48,556 [INFO ] Finished server process [36169]
