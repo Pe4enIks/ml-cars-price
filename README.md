@@ -1,6 +1,6 @@
 # Домашнее задание 1
 
-![FastAPI ML Service](/demo/fastapi-ml.mkv)
+![FastAPI ML Service](/demo/fastapi-ml.mp4)
 
 ## Что было сделано
 
