@@ -1,8 +1,6 @@
-# Домашнее задание 1
+# ML-сервис предсказания цены автомобиля
 
-<video src="demo/fastapi-ml.mp4" placeholder="demo/fastapi-ml.mp4" autoplay loop controls muted title="ML">
-    Sorry, your browser doesn't support HTML 5 video.
-</video>
+https://github.com/Pe4enIks/advanced-ml-task1/assets/57502208/383cb5f3-ef7f-4f8e-89af-f4ca3d577736
 
 ## Что было сделано
 
