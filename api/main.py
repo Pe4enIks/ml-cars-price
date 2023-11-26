@@ -34,7 +34,7 @@ status_codes = {
 }
 
 
-@app.post("/predict_item")
+@app.post('/predict_item')
 def predict_item(item: Item) -> float:
     '''
         Предсказание на одном объекте.
@@ -203,7 +203,7 @@ def predict_item(item: Item) -> float:
     return pred
 
 
-@app.post("/predict_items")
+@app.post('/predict_items')
 def predict_items(items: Items) -> list[float]:
     '''
         Предсказание на нескольких объектах.
